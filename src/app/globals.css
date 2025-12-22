@@ -21,4 +21,30 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
+  min-width: 1000px;
+  height: 100vh;
+}
+
+/* Target the scrollbar */
+::-webkit-scrollbar {
+    width: 12px; /* width of vertical scrollbar */
+    height: 12px; /* height of horizontal scrollbar */
+}
+
+/* Track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 6px;
+}
+
+/* Thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+    border: 3px solid #f1f1f1; /* adds padding effect */
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

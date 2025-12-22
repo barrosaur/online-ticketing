@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <Header></Header>
+          <Header/>
         </header>
         <main>
           {children}
