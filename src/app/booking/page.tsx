@@ -64,6 +64,30 @@ export default function BookingPage() {
 
   }, [selectedTravelOption])
 
+  useEffect(() => {
+    if(!selectedTravelOption) return
+
+    const fetchSeatsData = async () => {
+      try {
+
+        const res = await fetch(`/api/seats?travel_type=${selectedTravelOption}`)
+        const seatData = await res.json()
+
+        setSeats(seatData.results || seatData)
+
+      } catch (err) {
+        console.error(err)
+        return new Response(
+          JSON.stringify({ message: 'Fetch Error' }),
+          { status: 500 }
+        )
+      }
+    }
+
+    fetchSeatsData()
+
+  }, [selectedTravelOption])
+
   
   return (
     <div className="flex flex-col justify-center items-center my-10">
@@ -90,65 +114,27 @@ export default function BookingPage() {
           />
         </section>
         <section className="flex gap-28 my-5">
-          <div className="flex flex-col">
-            <label>Travel Type</label>
-            <select 
-              className="border border-solid border-black px-2 py-2 w-96"
-              value={selectedTravelOption}
-              onChange={(e) => setSelectedTravelOption(e.target.value)}
-            >
-              <option value="" defaultChecked>Select Travel Type</option>
-
-              {
-                travelOptions.map((travelOption) => (
-                  <option value={travelOption.type} key={travelOption.type}>
-                    {travelOption.type}
-                  </option>
-                ))
-              }
-
-            </select>
-          </div>
-
           <FormSelect
             label="Travel Type"
             selectValue={selectedTravelOption}
             setSelectValue={setSelectedTravelOption}
-            defaultForSelect="Select Travel Type"
-            optionValue={travelOptions.type}
+            defaultOption="Select Travel Type"
+            options={travelOptions.map(opt => opt.type)}          
           />
-
-          <div className="flex flex-col">
-            <label>Schedule</label>
-            <select
-              className="border border-solid border-black px-2 py-2 w-96"
-              value={selectedSched}
-              onChange={(e) => setSelectedSched(e.target.value)}
-            >
-              <option value="" defaultChecked>Select Schedule</option>
-
-              {
-                schedules.map((sched, i) => (
-                  <option 
-                    value={`${sched.day} - ${sched.time}`}
-                    key={i}
-                  >{`${sched.day} - ${sched.time}`}</option>
-                ))
-              }
-            </select>
-          </div>
-
-          <div className="flex flex-col">
-              <label>Seating</label>
-              <select
-                className="border border-solid border-black px-2 py-2 w-96"
-
-              >
-                <option value="" defaultChecked>Choose Seat</option>
-
-                
-              </select>
-          </div>
+          <FormSelect
+            label="Schedule"
+            selectValue={selectedSched}
+            setSelectValue={setSelectedSched}
+            defaultOption="Select Schedule"
+            options={schedules.map(schedule => `${schedule.day} - ${schedule.time}`)}
+          />
+          <FormSelect
+            label="Seating"
+            selectValue={selectedSeat}
+            setSelectValue={setSelectedSeat}
+            defaultOption="Choose a seat"
+            options={seats.map(seat => seat.seat)}
+          />
         </section>
       </form>
     </div>
