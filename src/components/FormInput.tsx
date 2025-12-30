@@ -4,8 +4,8 @@ import React from 'react'
 interface FormInputProps {
   label: string,
   type: string,
-  value: string,
-  setValue: React.Dispatch<React.SetStateAction<string>>
+  value: string | number,
+  setValue: (value: string) => void
 }
 
 const FormInput = ({ label, type, value, setValue }: FormInputProps) => {
