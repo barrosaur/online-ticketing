@@ -101,16 +101,6 @@ export default function BookingPage() {
 
   }, [selectedTravelOption])
 
-  function clearInput() {
-    setFirstName('')
-    setLastName('')
-    setMiddleName('')
-    setRefNum('')
-    setSelectedTravelOption('')
-    setSelectedSched('')
-    setSelectedSeat('')
-  }
-
   const post = async (e) => {
     e.preventDefault()
 
@@ -136,8 +126,13 @@ export default function BookingPage() {
       })
 
       const result = await res.json()
-      console.log(result)
-      // clearInput()
+      setFirstName('')
+      setLastName('')
+      setMiddleName('')
+      setRefNum('')
+      setSelectedSched('')
+      setSelectedTravelOption('')
+      setSelectedSeat('')
     } catch (err) {
       console.error(err)
     }
