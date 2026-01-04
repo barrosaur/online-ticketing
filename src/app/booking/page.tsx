@@ -3,16 +3,7 @@ import { useState, useEffect } from "react";
 import FormInput from "@/components/FormInput";
 import FormSelect from "@/components/FormSelect";
 import SeatingPlan from "@/components/SeatingPlan";
-
-interface CustomerDataProps {
-  firstName: string,
-  lastName: string,
-  middleName: string,
-  refNum: string,
-  travelType: string,
-  schedule: string,
-  seat: string
-}
+import Ticket from "@/components/Ticket";
 
 export default function BookingPage() {
 
@@ -29,6 +20,8 @@ export default function BookingPage() {
 
   const [seats, setSeats] = useState([])
   const [selectedSeat, setSelectedSeat] = useState('')
+
+  const [ticket, setTicket] = useState(false)
 
   useEffect(() => {
 
@@ -139,96 +132,115 @@ export default function BookingPage() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center my-10 overflow-x-hidden">
-      <h1 className="font-bold text-3xl">Book Now!</h1>
-      <form 
-        onSubmit={post}
-        className="flex flex-col justify-center items-center gap-5"
-      >
-        <section className="flex gap-28 my-5">
-          <FormInput
-            label="First Name"
-            value={firstName}
-            type="text"
-            setValue={setFirstName}
+    <div>
+      {
+        ticket ? (
+          <Ticket
+            firstName={firstName}
+            lastName={lastName}
+            middleName={middleName}
+            trip_type={selectedTravelOption}
+            schedule={selectedSched}
+            seat={selectedSeat}
+            refNum={refNum}
           />
-          <FormInput
-            label="Last Name"
-            value={lastName}
-            type="text"
-            setValue={setLastName}
-          />
-          <FormInput
-            label="Middle Name (Optional)"
-            value={middleName}
-            type="text"
-            setValue={setMiddleName}
-          />
-        </section>
-        <section className="flex gap-28 my-5">
-          <FormSelect
-            label="Travel Type"
-            selectValue={selectedTravelOption}
-            setSelectValue={setSelectedTravelOption}
-            defaultOption="Select Travel Type"
-            options={travelOptions.map(opt => opt.type)}          
-          />
-          <FormSelect
-            label="Schedule"
-            selectValue={selectedSched}
-            setSelectValue={setSelectedSched}
-            defaultOption="Select Schedule"
-            options={schedules.map(schedule => `${schedule.day} - ${schedule.time}`)}
-          />
-          <FormSelect
-            label="Seating"
-            selectValue={selectedSeat}
-            setSelectValue={setSelectedSeat}
-            defaultOption="Choose a seat"
-            options={seats.map(seat => seat.seat)}
-          />
-        </section>
-        <section className="flex gap-28 my-5">
-          <SeatingPlan
-            label="BUS SEATING"
-            src='/Bus.png'
-            alt="Bus Seating"
-          />
-          <SeatingPlan
-            label="SHIP SEATING"
-            src='/Ship.png'
-            alt="Ship Seating"
-          />
-          <SeatingPlan
-            label="PLANE SEATING"
-            src='/Plane.png'
-            alt="Plane Seating"
-          />
-        </section>
-        <section className="flex gap-36 my-5 items-center">
-          <div className="flex gap-3 flex-col bg-(--red-light) px-15 py-5">
-            <h3 className="font-bold text-xl">Payment Information:</h3>
-            <p>Name: <span>Online Ticket Pay</span></p>
-            <p>Account Number: <span>123456789</span></p>
+        ) : (
+          <div className="flex flex-col justify-center items-center my-10 overflow-x-hidden">
+            <h1 className="font-bold text-3xl">Book Now!</h1>
+            <form 
+              onSubmit={() => {
+                post()
+                setTicket(true)
+              }}
+              className="flex flex-col justify-center items-center gap-5"
+            >
+              <section className="flex gap-28 my-5">
+                <FormInput
+                  label="First Name"
+                  value={firstName}
+                  type="text"
+                  setValue={setFirstName}
+                />
+                <FormInput
+                  label="Last Name"
+                  value={lastName}
+                  type="text"
+                  setValue={setLastName}
+                />
+                <FormInput
+                  label="Middle Name (Optional)"
+                  value={middleName}
+                  type="text"
+                  setValue={setMiddleName}
+                />
+              </section>
+              <section className="flex gap-28 my-5">
+                <FormSelect
+                  label="Travel Type"
+                  selectValue={selectedTravelOption}
+                  setSelectValue={setSelectedTravelOption}
+                  defaultOption="Select Travel Type"
+                  options={travelOptions.map(opt => opt.type)}          
+                />
+                <FormSelect
+                  label="Schedule"
+                  selectValue={selectedSched}
+                  setSelectValue={setSelectedSched}
+                  defaultOption="Select Schedule"
+                  options={schedules.map(schedule => `${schedule.day} - ${schedule.time}`)}
+                />
+                <FormSelect
+                  label="Seating"
+                  selectValue={selectedSeat}
+                  setSelectValue={setSelectedSeat}
+                  defaultOption="Choose a seat"
+                  options={seats.map(seat => seat.seat)}
+                />
+              </section>
+              <section className="flex gap-28 my-5">
+                <SeatingPlan
+                  label="BUS SEATING"
+                  src='/Bus.png'
+                  alt="Bus Seating"
+                />
+                <SeatingPlan
+                  label="SHIP SEATING"
+                  src='/Ship.png'
+                  alt="Ship Seating"
+                />
+                <SeatingPlan
+                  label="PLANE SEATING"
+                  src='/Plane.png'
+                  alt="Plane Seating"
+                />
+              </section>
+              <section className="flex gap-36 my-5 items-center">
+                <div className="flex gap-3 flex-col bg-(--red-light) px-15 py-5">
+                  <h3 className="font-bold text-xl">Payment Information:</h3>
+                  <p>Name: <span>Online Ticket Pay</span></p>
+                  <p>Account Number: <span>123456789</span></p>
+                </div>
+                <FormInput
+                  label="Reference No."
+                  type="text"
+                  value={refNum}
+                  setValue={setRefNum}
+                />
+                <FormInput
+                  label="Upload Proof of Payment"
+                  type="file"
+                />
+              </section>
+              <button 
+                type="submit"
+                className="bg-emerald-600 px-5 py-3 text-white font-bold hover:bg-emerald-700 cursor-pointer outline-none rounded-lg"
+              >
+                Submit
+              </button>
+            </form>
           </div>
-          <FormInput
-            label="Reference No."
-            type="text"
-            value={refNum}
-            setValue={setRefNum}
-          />
-          <FormInput
-            label="Upload Proof of Payment"
-            type="file"
-          />
-        </section>
-        <button 
-          type="submit"
-          className="bg-emerald-600 px-5 py-3 text-white font-bold hover:bg-emerald-700 cursor-pointer outline-none rounded-lg"
-        >
-          Submit
-        </button>
-      </form>
+        )
+      }
     </div>
   );
 }

@@ -19,7 +19,7 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full bg-(--red) text-white h-30 font-bold flex items-center">
+    <header className="w-full bg-red-600 text-white h-30 font-bold flex items-center">
       <Image
         height={imgSize}
         width={imgSize}
