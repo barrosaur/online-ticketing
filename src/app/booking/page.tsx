@@ -4,6 +4,7 @@ import FormInput from "@/components/FormInput";
 import FormSelect from "@/components/FormSelect";
 import SeatingPlan from "@/components/SeatingPlan";
 import Ticket from "@/components/Ticket";
+import { useRouter } from "next/navigation";
 
 export default function BookingPage() {
 
@@ -98,8 +99,8 @@ export default function BookingPage() {
     e.preventDefault()
 
     const data = {
-      firstName,
       lastName,
+      firstName,
       middleName,
       refNum,
       selectedTravelOption,
@@ -119,13 +120,7 @@ export default function BookingPage() {
       })
 
       const result = await res.json()
-      setFirstName('')
-      setLastName('')
-      setMiddleName('')
-      setRefNum('')
-      setSelectedSched('')
-      setSelectedTravelOption('')
-      setSelectedSeat('')
+      setTicket(true)
     } catch (err) {
       console.error(err)
     }
@@ -136,8 +131,8 @@ export default function BookingPage() {
       {
         ticket ? (
           <Ticket
-            firstName={firstName}
             lastName={lastName}
+            firstName={firstName}
             middleName={middleName}
             trip_type={selectedTravelOption}
             schedule={selectedSched}
@@ -148,10 +143,7 @@ export default function BookingPage() {
           <div className="flex flex-col justify-center items-center my-10 overflow-x-hidden">
             <h1 className="font-bold text-3xl">Book Now!</h1>
             <form 
-              onSubmit={() => {
-                post()
-                setTicket(true)
-              }}
+              onSubmit={post}
               className="flex flex-col justify-center items-center gap-5"
             >
               <section className="flex gap-28 my-5">

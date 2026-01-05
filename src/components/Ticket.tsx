@@ -3,6 +3,7 @@ import { useState } from 'react'
 import jsPDF from 'jspdf'
 import { snapdom } from '@zumer/snapdom'
 import Image from 'next/image'
+import { QRCodeCanvas } from 'qrcode.react'
 
 interface TicketProps {
   firstName: string,
@@ -17,6 +18,16 @@ interface TicketProps {
 const Ticket = ({ firstName, lastName, middleName, trip_type, schedule, seat, refNum} : TicketProps) => {
   const imgSize = 200
   const [download, setDownload] = useState(false)
+
+  const qrValue = JSON.stringify({
+    firstName,
+    lastName,
+    middleName,
+    refNum,
+    trip_type,
+    schedule,
+    seat
+  })
 
   const toDataURL = async (blob : Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -33,8 +44,8 @@ const Ticket = ({ firstName, lastName, middleName, trip_type, schedule, seat, re
     const imgDataURL = await toDataURL(imgData)
 
     const rect = ticket?.getBoundingClientRect()
-    const pxWidth = rect?.width
-    const pxHeight = rect?.height
+    const pxWidth = rect.width
+    const pxHeight = rect.height
 
     const inchWidth = pxWidth / 96
     const inchHeight = pxHeight / 96
@@ -68,11 +79,9 @@ const Ticket = ({ firstName, lastName, middleName, trip_type, schedule, seat, re
           <p>Status: <span className='font-bold ml-10'>{refNum ? 'PAID' : 'TO BE PAID'}</span></p>
         </div>
         <div className='flex justify-center items-center border border-solid border-black'>
-          <Image
-            src='/logo.png'
-            width={imgSize}
-            height={imgSize}
-            alt='QR - Code'
+          <QRCodeCanvas
+            value={qrValue}
+            size={imgSize}
           />
         </div>
       </div>

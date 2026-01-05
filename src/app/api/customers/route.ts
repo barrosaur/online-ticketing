@@ -5,8 +5,8 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const { 
-      firstName, 
       lastName,
+      firstName, 
       middleName, 
       refNum, 
       selectedTravelOption, 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const query = `INSERT INTO customers 
     (last_name, first_name, middle_name, reference_num, travel_option, sched, seat) 
     VALUES (?, ?, ?, ?, ?, ?, ?)`
-    const [result] = await db.query(query, [firstName, lastName, middleName, refNum, selectedTravelOption, selectedSched, selectedSeat])
+    const [result] = await db.query(query, [lastName, firstName, middleName, refNum, selectedTravelOption, selectedSched, selectedSeat])
 
     return new Response(
       JSON.stringify({ message: 'POST OK', result }),
